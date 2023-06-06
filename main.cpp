@@ -59,8 +59,8 @@ Purpose:  This project will show you the difference between member functions and
 
 struct T
 {
-    T(float v, const char* str) : a(v), name(str) {}  //1
-    float a; //2
+    T(float v, const char* str) : value(v), name(str) {}  //1
+    float value; //2
     std::string name; //3
 };
 
@@ -68,8 +68,8 @@ struct CompareFunction                               //4
 {
     T* compare(T* a, T* b) //5
     {
-        if( a->a < b->a ) return a;
-        if( a->a > b->a ) return b;
+        if( a->value < b->value ) return a;
+        if( a->value > b->value ) return b;
         return nullptr;
     }
 };
@@ -79,20 +79,23 @@ struct U
     float var1 { 0.0 }, var2 { 0.0 };
     float multiply(float* updatedValue)      //12
     {
-        std::cout << "U's var1 value: " << this->var1 << std::endl;
-
-        this->var1 = *updatedValue;
-
-        std::cout << "U's var1 updated value: " << this->var1 << std::endl;
-
-        while( std::abs(this->var2 - this->var1) > 0.001f )
+        if( updatedValue != nullptr)
         {
-            /*
-             write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
-             */
-            this->var2 += 0.001f;
+            std::cout << "U's var1 value: " << this->var1 << std::endl;
+    
+            this->var1 = *updatedValue;
+    
+            std::cout << "U's var1 updated value: " << this->var1 << std::endl;
+    
+            while( std::abs(this->var2 - this->var1) > 0.001f )
+            {
+                /*
+                 write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+                 */
+                this->var2 += 0.001f;
+            }
+            std::cout << "U's var2 updated value: " << this->var2 << std::endl;
         }
-        std::cout << "U's var2 updated value: " << this->var2 << std::endl;
         return this->var2 * this->var1; 
     }
 };
@@ -101,17 +104,23 @@ struct Calculator
 {
     static float multiply(U* that, float* newValue)        //10
     {
-        std::cout << "U's var1 value: " << that->var1 << std::endl;
-        that->var1 = *newValue;
-        std::cout << "U's var1 updated value: " << that->var1 << std::endl;
-        while( std::abs(that->var2 - that->var1) > 0.001f )
+        if( that != nullptr)
         {
-            /*
-             write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
-             */
-            that->var2 += 0.001f;
+            if(newValue != nullptr)
+            {
+                std::cout << "U's var1 value: " << that->var1 << std::endl;
+                that->var1 = *newValue;
+                std::cout << "U's var1 updated value: " << that->var1 << std::endl;
+                while( std::abs(that->var2 - that->var1) > 0.001f )
+                {
+                    /*
+                     write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+                     */
+                    that->var2 += 0.001f;
+                }
+                std::cout << "U's var2 updated value: " << that->var2 << std::endl;
+            }
         }
-        std::cout << "U's var2 updated value: " << that->var2 << std::endl;
         return that->var2 * that->var1;
     }
 };
