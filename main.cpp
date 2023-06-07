@@ -68,8 +68,14 @@ struct CompareFunction                               //4
 {
     T* compare(T* a, T* b) //5
     {
-        if( a->value < b->value ) return a;
-        if( a->value > b->value ) return b;
+        if( a != nullptr)
+        {
+            if( b != nullptr)
+            {
+                if( a->value < b->value ) return a;
+                if( a->value > b->value ) return b;
+            }
+        }
         return nullptr;
     }
 };
@@ -111,6 +117,7 @@ struct Calculator
                 std::cout << "U's var1 value: " << that->var1 << std::endl;
                 that->var1 = *newValue;
                 std::cout << "U's var1 updated value: " << that->var1 << std::endl;
+                
                 while( std::abs(that->var2 - that->var1) > 0.001f )
                 {
                     /*
@@ -146,6 +153,7 @@ int main()
     
     CompareFunction f;                                            //7
     auto* smaller = f.compare(&t1, &t2);                              //8
+    
     if(smaller != nullptr)
     {
         std::cout << "the smaller one is << " << smaller->name << std::endl; //9
