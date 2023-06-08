@@ -54,25 +54,24 @@ struct CompareFunction                               //4
 struct U
 {
     float var1 { 0.0 }, var2 { 0.0 };
-    float multiply(float* updatedValue)      //12
+    float multiply(float& updatedValue)      //12
     {
-        if( updatedValue != nullptr)
+        std::cout << "U's var1 value: " << this->var1 << std::endl;
+
+        this->var1 = updatedValue;
+
+        std::cout << "U's var1 updated value: " << this->var1 << std::endl;
+
+        while( std::abs(this->var2 - this->var1) > 0.001f )
         {
-            std::cout << "U's var1 value: " << this->var1 << std::endl;
-    
-            this->var1 = *updatedValue;
-    
-            std::cout << "U's var1 updated value: " << this->var1 << std::endl;
-    
-            while( std::abs(this->var2 - this->var1) > 0.001f )
-            {
-                /*
-                 write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
-                 */
-                this->var2 += 0.001f;
-            }
-            std::cout << "U's var2 updated value: " << this->var2 << std::endl;
+            /*
+             write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+             */
+            this->var2 += 0.001f;
         }
+        
+        std::cout << "U's var2 updated value: " << this->var2 << std::endl;
+        
         return this->var2 * this->var1; 
     }
 };
@@ -131,7 +130,7 @@ int main()
     }
     else
     {
-        std::cout << "Error! The compare function has returned a nullptr due to the result being equal values. This could change further if alternative conditionals are implemented into the function." << std::endl;
+        std::cout << "Error! The compare function returns a nullptr if one or both of the input pointers are null." << std::endl;
     }
 
     U u1;
@@ -139,5 +138,5 @@ int main()
     std::cout << "[static func] u1's multiplied values: " << Calculator::multiply(&u1, &updatedValue) << std::endl;                  //11
     
     U u2;
-    std::cout << "[member func] u2's multiplied values: " << u2.multiply(&updatedValue) << std::endl;
+    std::cout << "[member func] u2's multiplied values: " << u2.multiply(updatedValue) << std::endl;
 }
