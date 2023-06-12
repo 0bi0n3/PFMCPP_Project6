@@ -37,16 +37,10 @@ struct T
 
 struct CompareFunction                               //4
 {
-    T* compare(T* a, T* b) //5
+    T* compare(T& a, T& b) //5
     {
-        if( a != nullptr)
-        {
-            if( b != nullptr)
-            {
-                if( a->value < b->value ) return a;
-                if( a->value > b->value ) return b;
-            }
-        }
+        if( a.value < b.value ) return &a;
+        if( a.value > b.value ) return &b;
         return nullptr;
     }
 };
@@ -78,27 +72,21 @@ struct U
 
 struct Calculator
 {
-    static float multiply(U* that, float* newValue)        //10
+    static float multiply(U& that, float& newValue)        //10
     {
-        if( that != nullptr)
+        std::cout << "U's var1 value: " << that.var1 << std::endl;
+        that.var1 = newValue;
+        std::cout << "U's var1 updated value: " << that.var1 << std::endl;
+        
+        while( std::abs(that.var2 - that.var1) > 0.001f )
         {
-            if(newValue != nullptr)
-            {
-                std::cout << "U's var1 value: " << that->var1 << std::endl;
-                that->var1 = *newValue;
-                std::cout << "U's var1 updated value: " << that->var1 << std::endl;
-                
-                while( std::abs(that->var2 - that->var1) > 0.001f )
-                {
-                    /*
-                     write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
-                     */
-                    that->var2 += 0.001f;
-                }
-                std::cout << "U's var2 updated value: " << that->var2 << std::endl;
-            }
+            /*
+             write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+             */
+            that.var2 += 0.001f;
         }
-        return that->var2 * that->var1;
+        std::cout << "U's var2 updated value: " << that.var2 << std::endl;
+        return that.var2 * that.var1;
     }
 };
         
@@ -122,7 +110,7 @@ int main()
     T t2(3.5f, "T2");                                             //6
     
     CompareFunction f;                                            //7
-    auto* smaller = f.compare(&t1, &t2);                              //8
+    auto* smaller = f.compare(t1, t2);                              //8
     
     if(smaller != nullptr)
     {
@@ -130,12 +118,12 @@ int main()
     }
     else
     {
-        std::cout << "Error! The compare function returns a nullptr if one or both of the input pointers are null." << std::endl;
+        std::cout << "T1 and T2 two are considered equal!" << std::endl;
     }
 
     U u1;
     float updatedValue = 5.f;
-    std::cout << "[static func] u1's multiplied values: " << Calculator::multiply(&u1, &updatedValue) << std::endl;                  //11
+    std::cout << "[static func] u1's multiplied values: " << Calculator::multiply(u1, updatedValue) << std::endl;                  //11
     
     U u2;
     std::cout << "[member func] u2's multiplied values: " << u2.multiply(updatedValue) << std::endl;
